@@ -13,9 +13,13 @@ const server = http.createServer((req, res) => {
         let path = "." + req.url
         fs.readdir(path, { "encoding": "utf8" }, (err, data) => {
             if (err) {
-                res.end("<h1> Directory Not Found</h1>")
+                const content = fs.readFileSync(path.toString())
+                res.end(content)
             } else {
                 let response = ''
+                if (data.length == 0) {
+                    response += "<h2>No directories to show</h2>"
+                }
                 data.forEach((el) => {
                     response += `<li style="font-size : 30px"><a href = ${el + "/"}>${el}</a></li>`
                 })
